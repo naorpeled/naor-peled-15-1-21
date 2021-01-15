@@ -1,5 +1,12 @@
 import { Message } from 'src/messages/entities/message.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  BeforeInsert,
+} from 'typeorm';
+import * as bcrypt from 'bcryptjs';
 
 @Entity({ name: 'users' })
 export class User {
