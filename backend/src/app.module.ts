@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm/dist/typeorm.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MessagesModule } from './messages/messages.module';
+import { UsersModule } from './users/users.module';
 import databaseConfig from './config/database.config';
 import globalConfig from './config/global.config';
 
@@ -20,6 +21,7 @@ import globalConfig from './config/global.config';
       inject: [ConfigService],
     }),
     MessagesModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
