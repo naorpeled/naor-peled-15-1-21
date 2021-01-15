@@ -8,6 +8,6 @@ export default registerAs('database', () => ({
   password: process.env.RDS_PASSWORD || 'root',
   database: process.env.RDS_DB_NAME || 'messages_assignment',
   entities: [__dirname + '/../**/*.entity.{ts,js}'],
-  synchronize: process.env.TYPEORM_SYNC || false,
+  synchronize: process.env.TYPEORM_SYNC || true,
   logging: process.env.TYPEORM_LOG || false,
 }));

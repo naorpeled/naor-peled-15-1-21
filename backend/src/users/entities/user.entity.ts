@@ -38,4 +38,9 @@ export class User {
     onUpdate: 'CASCADE',
   })
   messages_received: Message[];
+
+  @BeforeInsert()
+  generatePasswordHash(): void {
+    this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10));
+  }
 }
