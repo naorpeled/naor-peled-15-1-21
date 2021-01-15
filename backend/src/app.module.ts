@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config/dist/config.service';
 import { TypeOrmModule } from '@nestjs/typeorm/dist/typeorm.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { MessagesModule } from './messages/messages.module';
 import databaseConfig from './config/database.config';
 import globalConfig from './config/global.config';
 
@@ -18,6 +19,7 @@ import globalConfig from './config/global.config';
       useFactory: (config: ConfigService) => config.get('database'),
       inject: [ConfigService],
     }),
+    MessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
