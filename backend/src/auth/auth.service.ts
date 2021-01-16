@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
-import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { LoginCredentialsDto } from './dto/login-credentials.dto';
 import { RegistrationCredentialsDto } from './dto/registration-credentials.dto';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -20,8 +20,9 @@ export class AuthService {
   }
 
   async login(
+    res: Response,
     credentials: LoginCredentialsDto,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<Response> {
     const user = await this.usersService.findByCredentials(credentials);
 
     const payload: JwtPayload = {
@@ -30,6 +31,15 @@ export class AuthService {
     };
     const accessToken = this.jwtService.sign(payload);
 
-    return { accessToken };
+    const cookie = this.getCookieWithJwtToken(user.id, user.email);
+    res.setHeader('Set-Cookie', cookie);
+
+    return res.send({ accessToken });
+  }
+
+  getCookieWithJwtToken(userId: number, email: string) {
+    const payload: JwtPayload = { userId, email };
+    const token = this.jwtService.sign(payload);
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=2147483647`;
   }
 }
