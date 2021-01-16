@@ -1,7 +1,9 @@
 import {
+  ConflictException,
   forwardRef,
   Inject,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm/dist/common/typeorm.decorators';
@@ -20,9 +22,23 @@ export class MessagesService {
     private usersService: UsersService,
   ) {}
 
-  async create(createMessageDto: CreateMessageDto) {
-    const newMessage = this.messagesRepository.create(createMessageDto);
-    await this.messagesRepository.save(newMessage);
+  async create(senderId: any, createMessageDto: CreateMessageDto) {
+    const newMessage = this.messagesRepository.create({
+      sender: senderId,
+      ...createMessageDto,
+    });
+
+    try {
+      await this.messagesRepository.save(newMessage);
+    } catch (error) {
+      if (error?.errno === 1452) {
+        throw new NotFoundException(
+          'The recipient of this message was not found',
+        );
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
     return newMessage;
   }
 
