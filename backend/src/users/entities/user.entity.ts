@@ -22,7 +22,7 @@ export class User {
   @Column({ unique: true, type: 'varchar', length: 50 })
   email: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', select: false })
   password: string;
 
   @OneToMany(() => Message, (message) => message.sender, {
