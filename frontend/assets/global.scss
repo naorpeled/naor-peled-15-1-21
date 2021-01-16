@@ -1,5 +1,10 @@
 @import '~vuetify/src/styles/settings/_variables';
 
+/* Resets and variables */
+:root {
+  --main-text-color: #9575cd;
+}
+
 * {
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
   @media #{map-get($display-breakpoints, 'sm-and-down')} {
@@ -8,12 +13,44 @@
   box-sizing: border-box;
 }
 
+.v-input,
+.v-input .v-label,
+.v-btn__content,
+.v-text-field input,
+.v-messages__message {
+  font-size: 1rem;
+}
+.v-select__selection {
+  font-size: 0.85rem;
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    font-size: 1rem;
+  }
+}
+
+/* Helper classes */
 .link {
   text-decoration: none;
 }
 
 .pointer {
   cursor: pointer;
+}
+
+.hidden-md-and-up {
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    display: none !important;
+    visibility: hidden;
+  }
+}
+
+.h-full {
+  height: 100%;
+}
+
+/* Font helper classes */
+
+.main--text {
+  color: var(--main-text-color);
 }
 
 .text-6xl {
@@ -98,26 +135,5 @@
   text-align: center;
   @media #{map-get($display-breakpoints, 'md-and-up')} {
     text-align: start;
-  }
-}
-
-.v-input,
-.v-input .v-label,
-.v-btn__content,
-.v-text-field input,
-.v-messages__message {
-  font-size: 1rem;
-}
-.v-select__selection {
-  font-size: 0.85rem;
-  @media #{map-get($display-breakpoints, 'md-and-up')} {
-    font-size: 1rem;
-  }
-}
-
-.hidden-md-and-up {
-  @media #{map-get($display-breakpoints, 'md-and-up')} {
-    display: none !important;
-    visibility: hidden;
   }
 }
