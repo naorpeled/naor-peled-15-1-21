@@ -32,7 +32,7 @@ export class MessagesController {
     return this.messagesService.create(userId, createMessageDto);
   }
 
-  @Get('me')
+  @Get()
   @UseGuards(AuthGuard('jwt'))
   findMessagesForUser(
     @UserData('userId') userId: number,
@@ -41,25 +41,6 @@ export class MessagesController {
     return type === 'received'
       ? this.messagesService.findReceivedMessagesForUser(userId)
       : this.messagesService.findSentMessagesForUser(userId);
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.messagesService.findOne(id);
-  }
-
-  @Get()
-  findAll() {
-    return this.messagesService.findAll();
-  }
-
-  @Patch(':id')
-  @UsePipes(ValidationPipe)
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateMessageDto: UpdateMessageDto,
-  ) {
-    return this.messagesService.update(id, updateMessageDto);
   }
 
   @Delete(':id')

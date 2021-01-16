@@ -14,9 +14,21 @@ export class AuthService {
   ) {}
 
   async register(
+    res: Response,
     credentials: RegistrationCredentialsDto,
-  ): Promise<{ accessToken: string }> {
-    return await this.usersService.create(credentials);
+  ): Promise<Response> {
+    const newUser = await this.usersService.create(credentials);
+
+    const payload: JwtPayload = {
+      userId: newUser.id,
+      email: newUser.email,
+    };
+    const accessToken = this.jwtService.sign(payload);
+
+    const cookie = this.getCookieWithJwtToken(newUser.id, newUser.email);
+    res.setHeader('Set-Cookie', cookie);
+
+    return res.send({ accessToken });
   }
 
   async login(

@@ -1,5 +1,4 @@
 import {
-  ConflictException,
   forwardRef,
   Inject,
   Injectable,
@@ -11,7 +10,6 @@ import { InjectRepository } from '@nestjs/typeorm/dist/common/typeorm.decorators
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { CreateMessageDto } from './dto/create-message.dto';
-import { UpdateMessageDto } from './dto/update-message.dto';
 import { Message } from './entities/message.entity';
 
 @Injectable()
@@ -43,14 +41,6 @@ export class MessagesService {
     return newMessage;
   }
 
-  findAll() {
-    return this.messagesRepository.find();
-  }
-
-  findOne(id: number) {
-    return this.messagesRepository.findOne(id);
-  }
-
   findSentMessagesForUser(id: number) {
     return this.messagesRepository.find({
       relations: ['sender', 'receiver'],
@@ -63,16 +53,6 @@ export class MessagesService {
       relations: ['sender', 'receiver'],
       where: { receiver: id },
     });
-  }
-
-  async update(id: number, updateMessageDto: UpdateMessageDto) {
-    const updatedMessage = await this.messagesRepository.update(
-      id,
-      updateMessageDto,
-    );
-    return updatedMessage.affected > 0
-      ? 'Updated successfully'
-      : 'Could not update this message';
   }
 
   async remove(executorId: number, messageId: number) {

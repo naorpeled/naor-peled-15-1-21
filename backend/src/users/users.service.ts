@@ -34,23 +34,7 @@ export class UsersService {
         throw new InternalServerErrorException();
       }
     }
-
-    const payload: JwtPayload = {
-      userId: newUser.id,
-      email: newUser.email,
-    };
-
-    const accessToken = this.jwtService.sign(payload);
-
-    return { accessToken };
-  }
-
-  findAll() {
-    return this.usersRepository.find();
-  }
-
-  findOne(id: number) {
-    return this.usersRepository.findOne(id);
+    return newUser;
   }
 
   async findByCredentials(credentials: LoginCredentialsDto): Promise<User> {
@@ -72,25 +56,5 @@ export class UsersService {
     }
 
     return user;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    if (updateUserDto.password) {
-      updateUserDto.password = bcrypt.hashSync(
-        updateUserDto.password,
-        bcrypt.genSaltSync(10),
-      );
-    }
-
-    const updatedUser = this.usersRepository.update(id, updateUserDto);
-
-    return updatedUser;
-  }
-
-  async remove(id: number) {
-    const user = await this.usersRepository.findOne(id);
-    if (!user) throw new NotFoundException('No users found with the given id');
-    this.usersRepository.remove(user);
-    return 'User deleted successfully';
   }
 }

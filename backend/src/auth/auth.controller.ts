@@ -20,9 +20,10 @@ export class AuthController {
   @Post('/register')
   @UsePipes(ValidationPipe)
   register(
+    @Res() res: Response,
     @Body() credentials: RegistrationCredentialsDto,
-  ): Promise<{ accessToken: string }> {
-    return this.authService.register(credentials);
+  ): Promise<Response> {
+    return this.authService.register(res, credentials);
   }
 
   @Post('login')
