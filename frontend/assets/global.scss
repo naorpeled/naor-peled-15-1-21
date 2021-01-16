@@ -1,0 +1,123 @@
+@import '~vuetify/src/styles/settings/_variables';
+
+* {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  @media #{map-get($display-breakpoints, 'sm-and-down')} {
+    font-size: 17px;
+  }
+  box-sizing: border-box;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.text-6xl {
+  font-size: 2rem;
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    font-size: 4rem;
+  }
+}
+
+.text-5xl {
+  font-size: 2.25rem;
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    font-size: 3rem;
+  }
+}
+
+.text-4xl {
+  font-size: 2rem;
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    font-size: 2.25rem;
+  }
+}
+
+.text-3xl {
+  font-size: 1.5rem;
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    font-size: 1.875rem;
+  }
+}
+
+.text-2xl {
+  font-size: 1.25rem;
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    font-size: 1.5rem;
+  }
+}
+
+.text-md-xl {
+  font-size: 1rem;
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    font-size: 1.25rem;
+  }
+}
+.text-xl {
+  font-size: 1.125rem;
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    font-size: 1.25rem;
+  }
+}
+
+.text-lg {
+  font-size: 1.075rem;
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    font-size: 1.125rem;
+  }
+}
+
+.text-md-base {
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    font-size: 1rem;
+  }
+}
+
+.text-base {
+  font-size: 1rem;
+}
+
+.text-xs-md {
+  @media #{map-get($display-breakpoints, 'sm-and-down')} {
+    font-size: 0.875rem;
+  }
+}
+.text-md {
+  font-size: 0.875rem;
+}
+
+.text-sm {
+  font-size: 0.75rem;
+}
+
+.text-md-start {
+  text-align: center;
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    text-align: start;
+  }
+}
+
+.v-input,
+.v-input .v-label,
+.v-btn__content,
+.v-text-field input,
+.v-messages__message {
+  font-size: 1rem;
+}
+.v-select__selection {
+  font-size: 0.85rem;
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    font-size: 1rem;
+  }
+}
+
+.hidden-md-and-up {
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    display: none !important;
+    visibility: hidden;
+  }
+}
