@@ -5,6 +5,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm/dist/common/typeorm.decorators';
 import { UsersService } from 'src/users/users.service';
@@ -74,10 +75,14 @@ export class MessagesService {
       : 'Could not update this message';
   }
 
-  async remove(id: number) {
-    const message = await this.messagesRepository.findOne(id);
+  async remove(executorId: number, messageId: number) {
+    const message = await this.messagesRepository.findOne({
+      relations: ['sender'],
+      where: { id: messageId },
+    });
     if (!message)
       throw new NotFoundException('No messages found with the given id');
+    if (message.sender.id !== executorId) throw new UnauthorizedException();
     this.messagesRepository.remove(message);
     return 'Message deleted successfully';
   }

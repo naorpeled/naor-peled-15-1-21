@@ -63,7 +63,11 @@ export class MessagesController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.messagesService.remove(id);
+  @UseGuards(AuthGuard('jwt'))
+  remove(
+    @UserData('userId') executorId: number,
+    @Param('id', ParseIntPipe) messageId: number,
+  ) {
+    return this.messagesService.remove(executorId, messageId);
   }
 }
