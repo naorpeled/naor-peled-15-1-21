@@ -1,5 +1,7 @@
 import {
+  ConflictException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -23,7 +25,15 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     const newUser = this.usersRepository.create(createUserDto);
-    await this.usersRepository.save(newUser);
+    try {
+      await this.usersRepository.save(newUser);
+    } catch (error) {
+      if (error?.errno === 1062) {
+        throw new ConflictException('A user with this email already exists');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
 
     const payload: JwtPayload = {
       userId: newUser.id,
