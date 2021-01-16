@@ -50,6 +50,20 @@ export class MessagesService {
     return this.messagesRepository.findOne(id);
   }
 
+  findSentMessagesForUser(id: number) {
+    return this.messagesRepository.find({
+      relations: ['sender', 'receiver'],
+      where: { sender: id },
+    });
+  }
+
+  findReceivedMessagesForUser(id: number) {
+    return this.messagesRepository.find({
+      relations: ['sender', 'receiver'],
+      where: { receiver: id },
+    });
+  }
+
   async update(id: number, updateMessageDto: UpdateMessageDto) {
     const updatedMessage = await this.messagesRepository.update(
       id,

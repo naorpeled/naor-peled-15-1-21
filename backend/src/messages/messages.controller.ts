@@ -32,6 +32,17 @@ export class MessagesController {
     return this.messagesService.create(userId, createMessageDto);
   }
 
+  @Get('me')
+  @UseGuards(AuthGuard('jwt'))
+  findMessagesForUser(
+    @UserData('userId') userId: number,
+    @Query('type') type: string,
+  ) {
+    return type === 'received'
+      ? this.messagesService.findReceivedMessagesForUser(userId)
+      : this.messagesService.findSentMessagesForUser(userId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.messagesService.findOne(id);
