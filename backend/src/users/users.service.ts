@@ -37,6 +37,10 @@ export class UsersService {
     return newUser;
   }
 
+  fineOne(userId: number) {
+    return this.usersRepository.findOne(userId);
+  }
+
   async findByCredentials(credentials: LoginCredentialsDto): Promise<User> {
     const { email, password } = credentials;
     const user = await this.usersRepository
