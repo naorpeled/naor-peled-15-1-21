@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center">
+  <div v-if="!isLoggedIn" class="text-center">
     <h1 class="text-4xl main--text">Welcome to my messaging app</h1>
     <h2>In order to perform any actions you must have an account</h2>
     <component
@@ -18,6 +18,9 @@ export default {
     }
   },
   computed: {
+    isLoggedIn() {
+      return this.$store.state.auth.loggedIn
+    },
     getWelcomeFormType() {
       return this.formType === 'login'
         ? () => import('@/components/Forms/Login')
