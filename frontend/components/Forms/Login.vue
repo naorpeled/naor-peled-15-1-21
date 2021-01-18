@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form @submit.prevent="login">
     <span class="text-xl">Enter your credentials below in order to login</span>
     <v-text-field
       v-model.lazy="email"
@@ -22,7 +22,9 @@
       @input="$v.password.$touch()"
       @blur="$v.password.$touch()"
     />
-    <v-btn class="my-5" :disabled="$v.$invalid">Login</v-btn>
+    <v-btn type="submit" class="my-5" :loading="loading" :disabled="$v.$invalid"
+      >Login</v-btn
+    >
     <div>
       <span>New account?</span>
       <nuxt-link class="link" to="/" text @click.native="$emit('onFormSwitch')">
@@ -49,6 +51,7 @@ export default {
     return {
       email: null,
       password: null,
+      loading: false,
     }
   },
   validations: {
@@ -72,6 +75,22 @@ export default {
       !this.$v.password.validPassword && errors.push('Invalid password')
 
       return errors
+    },
+  },
+  methods: {
+    async login() {
+      if (this.$v.$invalid) return
+      this.loading = true
+      try {
+        await this.$store.dispatch({
+          type: 'auth/attemptLogin',
+          email: this.email,
+          password: this.password,
+        })
+      } catch (e) {
+        this.error = true
+      }
+      this.loading = false
     },
   },
 }

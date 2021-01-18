@@ -13,13 +13,16 @@ export default {
   data() {
     return {}
   },
+  created() {
+    if (!this.$store.state.user) {
+      if (!this.$store.state.loggedIn) return false
+      this.$store.dispatch({ type: 'fetchUserData' })
+    }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-body {
-}
-
 .container {
   position: absolute;
   top: 50%;

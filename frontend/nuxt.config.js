@@ -39,7 +39,10 @@ export default {
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:3000', // Used as fallback if no runtime config is provided
+    credentials: true,
+  },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
@@ -49,6 +52,17 @@ export default {
   webfontloader: {
     google: {
       families: ['Roboto:400,700,800,900&display=swap'],
+    },
+  },
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: process.env.BROWSER_BASE_URL,
+    },
+  },
+
+  privateRuntimeConfig: {
+    axios: {
+      baseURL: process.env.BASE_URL,
     },
   },
 
