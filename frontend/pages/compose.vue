@@ -2,7 +2,7 @@
   <div class="text-center">
     <h1 class="text-4xl main--text">Compose a message</h1>
     <h2>Here you can compose and send messages to other users</h2>
-    <v-form id="compose-form" class="mx-auto">
+    <v-form id="compose-form" class="mx-auto" @submit.prevent="sendMessage">
       <v-autocomplete
         v-model.lazy="receiver"
         type="text"
@@ -40,7 +40,7 @@
         @input="$v.content.$touch()"
         @blur="$v.content.$touch()"
       />
-      <v-btn><v-icon class="mr-2">mdi-send</v-icon>Send</v-btn>
+      <v-btn type="submit"><v-icon class="mr-2">mdi-send</v-icon>Send</v-btn>
     </v-form>
   </div>
 </template>
@@ -62,8 +62,6 @@ export default {
       receiver: null,
       subject: null,
       content: null,
-      model: null,
-      search: null,
       users: [],
     }
   },
@@ -89,6 +87,18 @@ export default {
   },
   async mounted() {
     this.users = await this.$axios.$get('/users')
+  },
+  methods: {
+    sendMessage() {
+      if (this.$v.$invalid) return
+      const message = {
+        receiver: this.receiver,
+        subject: this.subject,
+        content: this.content,
+      }
+      console.log(message.receiver)
+      this.$store.dispatch('messages/attemptMessageSend', message)
+    },
   },
 }
 </script>

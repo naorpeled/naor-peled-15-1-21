@@ -21,4 +21,17 @@ export const actions = {
     const messages = await this.$axios.$get('/messages?type=received')
     commit({ type: 'setReceivedMessages', messages })
   },
+  async attemptMessageSend({ dispatch }, message) {
+    try {
+      await this.$axios.$post('/messages', {
+        ...message,
+      })
+
+      await dispatch({ type: 'fetchSentMessages' })
+      await dispatch({ type: 'fetchReceivedMessages' })
+      this.$router.push('/')
+    } catch (e) {
+      throw new Error(e)
+    }
+  },
 }
