@@ -22,9 +22,15 @@
       @input="$v.password.$touch()"
       @blur="$v.password.$touch()"
     />
-    <v-btn type="submit" class="my-5" :loading="loading" :disabled="$v.$invalid"
-      >Login</v-btn
+    <v-btn
+      type="submit"
+      class="my-5"
+      :loading="loading"
+      :disabled="$v.$invalid"
+      :class="[{ red: error, 'white--text': error }]"
     >
+      Login
+    </v-btn>
     <div>
       <span>New account?</span>
       <nuxt-link class="link" to="/" text @click.native="$emit('onFormSwitch')">
@@ -52,6 +58,7 @@ export default {
       email: null,
       password: null,
       loading: false,
+      error: false,
     }
   },
   validations: {
@@ -79,6 +86,7 @@ export default {
   },
   methods: {
     async login() {
+      this.error = false
       if (this.$v.$invalid) return
       this.loading = true
       try {
@@ -89,6 +97,9 @@ export default {
         })
       } catch (e) {
         this.error = true
+        setTimeout(() => {
+          this.error = false
+        }, 2000)
       }
       this.loading = false
     },

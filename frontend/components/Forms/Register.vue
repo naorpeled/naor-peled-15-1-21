@@ -40,9 +40,15 @@
       @input="$v.password.$touch()"
       @blur="$v.password.$touch()"
     />
-    <v-btn type="submit" class="my-5" :loading="loading" :disabled="$v.$invalid"
-      >Register</v-btn
+    <v-btn
+      type="submit"
+      class="my-5"
+      :loading="loading"
+      :disabled="$v.$invalid"
+      :class="[{ red: error, 'white--text': error }]"
     >
+      Register
+    </v-btn>
     <div>
       <span>Already have an account?</span>
       <nuxt-link class="link" to="/" text @click.native="$emit('onFormSwitch')">
@@ -75,6 +81,7 @@ export default {
       lastName: null,
       loading: false,
       emailExists: false,
+      error: false,
     }
   },
   validations: {
@@ -113,6 +120,7 @@ export default {
     emailErrors() {
       const errors = []
       if (!this.$v.email.$dirty || this.googleAuth) return []
+      this.emailExists && errors.push('This email already exists')
       !this.$v.email.required && errors.push('This field is required')
       !this.$v.email.email && errors.push('Invalid e-mail')
       return errors
@@ -131,6 +139,7 @@ export default {
   methods: {
     async register() {
       this.emailExists = false
+      this.error = false
       if (this.$v.$invalid) return
       this.loading = true
       try {
@@ -146,6 +155,9 @@ export default {
           this.emailExists = true
         }
         this.error = true
+        setTimeout(() => {
+          this.error = false
+        }, 2000)
       }
       this.loading = false
     },
