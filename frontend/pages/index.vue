@@ -3,15 +3,45 @@
     <h1 class="text-4xl main--text">Welcome to my messaging app</h1>
     <h2>In order to perform any actions you must have an account</h2>
     <component
-      :is="getWelcomeFormType"
+      :is="welcomeFormType"
       id="index-form"
       @onFormSwitch="switchFormType"
     />
+  </div>
+  <div v-else>
+    <v-expansion-panels>
+      <v-expansion-panel v-for="message in messages" :key="message.id">
+        <v-expansion-panel-header>
+          <template>
+            <v-row no-gutters>
+              <v-col cols="4"> Subject: {{ message.subject }} </v-col>
+              <v-col cols="8" class="text--secondary">
+                <span>
+                  Sent by
+                  {{
+                    message.sender.first_name + ' ' + message.sender.last_name
+                  }}
+                  on {{ message.created_at | datePreetify }}
+                </span>
+              </v-col>
+            </v-row>
+          </template>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          {{ message.content }}
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </div>
 </template>
 
 <script>
 export default {
+  filters: {
+    datePreetify: (date) => {
+      return new Date(date).toLocaleDateString('he-IL')
+    },
+  },
   data: () => {
     return {
       formType: 'login',
@@ -21,10 +51,16 @@ export default {
     isLoggedIn() {
       return this.$store.state.auth.loggedIn
     },
-    getWelcomeFormType() {
+    welcomeFormType() {
       return this.formType === 'login'
         ? () => import('@/components/Forms/Login')
         : () => import('@/components/Forms/Register')
+    },
+    messages() {
+      if (!this.$store.state.auth.loggedIn) return null
+      return this.$route.query.messagesType === 'inbox'
+        ? this.$store.state.messages.receivedMessages
+        : this.$store.state.messages.sentMessages
     },
   },
   methods: {

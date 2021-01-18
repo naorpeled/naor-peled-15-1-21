@@ -13,10 +13,12 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchUserData({ commit }) {
+  async fetchUserData({ commit, dispatch }) {
     const data = await this.$axios.$get('/users/me')
     commit({ type: 'setUserData', data })
     commit({ type: 'setLoggedIn', flag: true })
+    await dispatch('messages/fetchSentMessages', {}, { root: true })
+    await dispatch('messages/fetchReceivedMessages', {}, { root: true })
   },
   async attemptRegistration(
     { dispatch },

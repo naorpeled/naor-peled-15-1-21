@@ -2,6 +2,7 @@
   <v-app>
     <v-main class="deep-purple darken-1">
       <v-container class="white elevation-10">
+        <navbar />
         <nuxt />
       </v-container>
     </v-main>
