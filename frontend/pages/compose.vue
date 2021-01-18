@@ -9,9 +9,19 @@
         label="Receiver"
         :error="receiverErrors.length != 0"
         :error-messages="receiverErrors"
+        :items="users"
+        item-value="id"
+        :item-text="
+          (user) => `${user.id} - ${user.first_name} ${user.last_name}`
+        "
+        :auto-select-first="false"
         @input="$v.receiver.$touch()"
         @blur="$v.receiver.$touch()"
-      />
+      >
+        <template v-slot:no-data
+          ><div class="pa-4">No users found.</div></template
+        >
+      </v-autocomplete>
       <v-text-field
         v-model.lazy="subject"
         type="text"
@@ -21,7 +31,7 @@
         @input="$v.subject.$touch()"
         @blur="$v.subject.$touch()"
       />
-      <v-text-field
+      <v-textarea
         v-model.lazy="content"
         type="text"
         label="Message"
@@ -52,6 +62,9 @@ export default {
       receiver: null,
       subject: null,
       content: null,
+      model: null,
+      search: null,
+      users: [],
     }
   },
   computed: {
@@ -73,6 +86,9 @@ export default {
       !this.$v.content.required && errors.push('This field is required')
       return errors
     },
+  },
+  async mounted() {
+    this.users = await this.$axios.$get('/users')
   },
 }
 </script>

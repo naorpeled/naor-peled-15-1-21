@@ -61,4 +61,10 @@ export class UsersService {
 
     return user;
   }
+
+  findAllIdsAndNames() {
+    return this.usersRepository.find({
+      select: ['id', 'first_name', 'last_name'],
+    });
+  }
 }
