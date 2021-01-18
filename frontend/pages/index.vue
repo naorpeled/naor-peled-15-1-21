@@ -15,7 +15,7 @@
           <template>
             <v-row no-gutters>
               <v-col cols="4"> Subject: {{ message.subject }} </v-col>
-              <v-col cols="8" class="text--secondary">
+              <v-col cols="8">
                 <span>
                   Sent by
                   {{
@@ -28,7 +28,16 @@
           </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          {{ message.content }}
+          <p>{{ message.content }}</p>
+          <v-btn
+            v-if="$store.state.auth.user.id === message.sender.id"
+            color="red"
+            class="white--text"
+            small
+            @click.prevent="deleteMessage(message.id)"
+          >
+            <v-icon class="mr-2">mdi-close</v-icon> Delete
+          </v-btn>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -67,6 +76,9 @@ export default {
   methods: {
     switchFormType() {
       this.formType = this.formType === 'login' ? 'register' : 'login'
+    },
+    deleteMessage(messageId) {
+      this.$store.dispatch('messages/attemptMessageDelete', messageId)
     },
   },
 }

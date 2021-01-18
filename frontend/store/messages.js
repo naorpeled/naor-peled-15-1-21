@@ -34,4 +34,14 @@ export const actions = {
       throw new Error(e)
     }
   },
+  async attemptMessageDelete({ dispatch }, messageId) {
+    try {
+      await this.$axios.$delete(`/messages/${messageId}`)
+
+      await dispatch({ type: 'fetchSentMessages' })
+      await dispatch({ type: 'fetchReceivedMessages' })
+    } catch (e) {
+      throw new Error(e)
+    }
+  },
 }
