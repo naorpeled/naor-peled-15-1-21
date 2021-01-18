@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoggedIn" class="text-center">
+  <div class="text-center">
     <h1 class="text-4xl main--text">Compose a message</h1>
     <h2>Here you can compose and send messages</h2>
   </div>

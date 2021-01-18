@@ -37,6 +37,7 @@
 
 <script>
 export default {
+  middleware: 'auth',
   filters: {
     datePreetify: (date) => {
       return new Date(date).toLocaleDateString('he-IL')

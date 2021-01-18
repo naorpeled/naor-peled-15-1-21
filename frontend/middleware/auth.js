@@ -1,4 +1,11 @@
-export default function ({ store, route, redirect }) {
-  if (route.path === '/') return true
-  if (!store.state.loggedIn) return redirect('/')
+export default async function ({ store, route, redirect }) {
+  const isAuthenticated = store.state.auth.loggedIn
+  if (!isAuthenticated) {
+    try {
+      await store.dispatch('auth/fetchUserData')
+      return true
+    } catch (e) {
+      return route.path === '/' ? true : redirect('/')
+    }
+  }
 }
