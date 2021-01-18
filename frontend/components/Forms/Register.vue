@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form @submit.prevent="register">
     <span class="text-xl">Please fill all the fields below</span>
     <v-text-field
       v-model.lazy="firstName"
@@ -40,7 +40,9 @@
       @input="$v.password.$touch()"
       @blur="$v.password.$touch()"
     />
-    <v-btn class="my-5" :disabled="$v.$invalid">Register</v-btn>
+    <v-btn type="submit" class="my-5" :loading="loading" :disabled="$v.$invalid"
+      >Register</v-btn
+    >
     <div>
       <span>Already have an account?</span>
       <nuxt-link class="link" to="/" text @click.native="$emit('onFormSwitch')">
@@ -71,6 +73,8 @@ export default {
       password: null,
       firstName: null,
       lastName: null,
+      loading: false,
+      emailExists: false,
     }
   },
   validations: {
@@ -122,6 +126,28 @@ export default {
       !this.$v.password.validPassword && errors.push('Invalid password')
 
       return errors
+    },
+  },
+  methods: {
+    async register() {
+      this.emailExists = false
+      if (this.$v.$invalid) return
+      this.loading = true
+      try {
+        await this.$store.dispatch({
+          type: 'auth/attemptRegistration',
+          firstName: this.firstName,
+          lastName: this.lastName,
+          email: this.email,
+          password: this.password,
+        })
+      } catch (e) {
+        if (e.type === 'conflict') {
+          this.emailExists = true
+        }
+        this.error = true
+      }
+      this.loading = false
     },
   },
 }
