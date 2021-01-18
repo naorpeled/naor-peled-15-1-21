@@ -68,9 +68,9 @@ export default {
     },
     messages() {
       if (!this.$store.state.auth.loggedIn) return null
-      return this.$route.query.messagesType === 'inbox'
-        ? this.$store.state.messages.receivedMessages
-        : this.$store.state.messages.sentMessages
+      return this.$route.query.messagesType === 'sent'
+        ? this.$store.state.messages.sentMessages
+        : this.$store.state.messages.receivedMessages
     },
   },
   methods: {
@@ -85,9 +85,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~vuetify/src/styles/settings/_variables';
+
 #index-form {
   margin: auto;
   height: 100%;
-  width: 34%;
+
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    width: 34%;
+  }
 }
 </style>

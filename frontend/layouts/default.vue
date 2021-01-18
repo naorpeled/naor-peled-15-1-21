@@ -29,12 +29,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~vuetify/src/styles/settings/_variables';
+
 .container {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 80vw;
-  height: 75vh;
+  width: 95vw;
+  height: 85vh;
+  @media #{map-get($display-breakpoints, 'md-and-up')} {
+    width: 80vw;
+    height: 75vh;
+  }
 
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);

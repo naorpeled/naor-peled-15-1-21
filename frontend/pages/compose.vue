@@ -96,7 +96,6 @@ export default {
         subject: this.subject,
         content: this.content,
       }
-      console.log(message.receiver)
       this.$store.dispatch('messages/attemptMessageSend', message)
     },
   },
@@ -104,9 +103,13 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~vuetify/src/styles/settings/_variables';
+
 #compose {
   &-form {
-    width: 65%;
+    @media #{map-get($display-breakpoints, 'md-and-up')} {
+      width: 65%;
+    }
   }
 }
 </style>

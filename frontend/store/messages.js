@@ -14,11 +14,11 @@ export const mutations = {
 
 export const actions = {
   async fetchSentMessages({ commit }) {
-    const messages = await this.$axios.$get('/messages')
+    const messages = await this.$axios.$get('/messages?type=sent')
     commit({ type: 'setSentMessages', messages })
   },
   async fetchReceivedMessages({ commit }) {
-    const messages = await this.$axios.$get('/messages?type=received')
+    const messages = await this.$axios.$get('/messages')
     commit({ type: 'setReceivedMessages', messages })
   },
   async attemptMessageSend({ dispatch }, message) {

@@ -37,9 +37,9 @@ export class MessagesController {
     @UserData('userId') userId: number,
     @Query('type') type: string,
   ) {
-    return type === 'received'
-      ? this.messagesService.findReceivedMessagesForUser(userId)
-      : this.messagesService.findSentMessagesForUser(userId);
+    return type === 'sent'
+      ? this.messagesService.findSentMessagesForUser(userId)
+      : this.messagesService.findReceivedMessagesForUser(userId);
   }
 
   @Delete(':id')
