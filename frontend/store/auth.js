@@ -49,4 +49,12 @@ export const actions = {
       throw new Error('Unauthorized')
     }
   },
+  async attemptLogout({ commit }) {
+    commit({ type: 'setUserData', data: {} })
+    commit({ type: 'setLoggedIn', flag: false })
+    try {
+      await this.$axios.$post('/auth/logout')
+    } catch (e) {}
+    this.$router.push('/')
+  },
 }

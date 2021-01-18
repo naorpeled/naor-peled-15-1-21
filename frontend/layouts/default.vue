@@ -2,7 +2,7 @@
   <v-app>
     <v-main class="deep-purple darken-1">
       <v-container class="white elevation-10">
-        <navbar />
+        <navbar v-if="isLoggedIn" />
         <nuxt />
       </v-container>
     </v-main>
@@ -13,6 +13,11 @@
 export default {
   data() {
     return {}
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.auth.loggedIn
+    },
   },
   created() {
     if (!this.$store.state.user) {

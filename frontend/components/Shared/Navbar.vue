@@ -11,12 +11,22 @@
         ><v-icon class="mr-2">mdi-send</v-icon>Sent</v-tab
       >
     </v-tabs>
-    <v-btn> <v-icon class="mr-2">mdi-logout</v-icon> Logout </v-btn>
+    <v-btn @click="logout">
+      <v-icon class="mr-2">mdi-logout</v-icon> Logout
+    </v-btn>
   </nav>
 </template>
 
 <script>
-export default {}
+export default {
+  methods: {
+    async logout() {
+      await this.$store.dispatch({
+        type: 'auth/attemptLogout',
+      })
+    },
+  },
+}
 </script>
 
 <style lang="scss">
