@@ -12,4 +12,10 @@ export class UsersController {
   findOne(@UserData('userId') userId: number) {
     return this.usersService.fineOne(userId);
   }
+
+  @Get('/')
+  @UseGuards(AuthGuard('jwt'))
+  findAllIdsAndNames() {
+    return this.usersService.findAllIdsAndNames();
+  }
 }
