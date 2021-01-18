@@ -68,7 +68,7 @@ export default {
   computed: {
     emailErrors() {
       const errors = []
-      if (!this.$v.email.$dirty || this.googleAuth) return []
+      if (!this.$v.email.$dirty) return []
       !this.$v.email.required && errors.push('This field is required')
       !this.$v.email.email && errors.push('Invalid e-mail')
       return errors

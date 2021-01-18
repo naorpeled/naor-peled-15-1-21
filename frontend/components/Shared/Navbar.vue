@@ -1,6 +1,6 @@
 <template>
-  <nav class="d-flex">
-    <v-btn color="purple lighten-2">
+  <nav class="d-flex align-center">
+    <v-btn color="purple lighten-2" to="/compose" nuxt>
       <v-icon class="mr-2">mdi-pencil</v-icon> Compose
     </v-btn>
     <v-tabs>

@@ -1,14 +1,86 @@
 <template>
   <div class="text-center">
     <h1 class="text-4xl main--text">Compose a message</h1>
-    <h2>Here you can compose and send messages</h2>
+    <h2>Here you can compose and send messages to other users</h2>
+    <v-form id="compose-form" class="mx-auto">
+      <v-autocomplete
+        v-model.lazy="receiver"
+        type="text"
+        label="Receiver"
+        :error="receiverErrors.length != 0"
+        :error-messages="receiverErrors"
+        @input="$v.receiver.$touch()"
+        @blur="$v.receiver.$touch()"
+      />
+      <v-text-field
+        v-model.lazy="subject"
+        type="text"
+        label="Subject"
+        :error="subjectErrors.length != 0"
+        :error-messages="subjectErrors"
+        @input="$v.subject.$touch()"
+        @blur="$v.subject.$touch()"
+      />
+      <v-text-field
+        v-model.lazy="content"
+        type="text"
+        label="Message"
+        :error="contentErrors.length != 0"
+        :error-messages="contentErrors"
+        @input="$v.content.$touch()"
+        @blur="$v.content.$touch()"
+      />
+      <v-btn><v-icon class="mr-2">mdi-send</v-icon>Send</v-btn>
+    </v-form>
   </div>
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
+
 export default {
+  mixins: [validationMixin],
   middleware: 'auth',
+  validations: {
+    receiver: { required },
+    subject: { required },
+    content: { required },
+  },
+  data: () => {
+    return {
+      receiver: null,
+      subject: null,
+      content: null,
+    }
+  },
+  computed: {
+    receiverErrors() {
+      const errors = []
+      if (!this.$v.receiver.$dirty) return []
+      !this.$v.receiver.required && errors.push('This field is required')
+      return errors
+    },
+    subjectErrors() {
+      const errors = []
+      if (!this.$v.subject.$dirty) return []
+      !this.$v.subject.required && errors.push('This field is required')
+      return errors
+    },
+    contentErrors() {
+      const errors = []
+      if (!this.$v.content.$dirty) return []
+      !this.$v.content.required && errors.push('This field is required')
+      return errors
+    },
+  },
 }
 </script>
 
-<style></style>
+<style lang="scss">
+#compose {
+  &-form {
+    width: 65%;
+  }
+}
+</style>
